@@ -6,6 +6,7 @@ pipeline {
         sh '''cd quicksort
               make'''
       }
+    }
     stage('Move shared library') {
       steps {
         sh '''cp quicksort/quicksort.so arraysort/lib'''
