@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="build" basedir="." default="main">
+
+    <property name="src.dir"     value="src"/>
+    <property name="test.dir"    value="test"/>
+	<property name="lib.dir"     value="lib"/>
+    <property name="build.dir"   value="bin"/>
+    <property name="classes.dir" value="${build.dir}/classes"/>
+    <property name="jar.dir"     value="${build.dir}"/>
+	<property name="main-class"  value="es.upm.grise.prof.pipelines.JavaClassThatUsesQuicksort"/>
+
+    <path id="classpath">
+    	<fileset dir="${lib.dir}" includes="*.jar"/>
+    </path>
+    
+    <path id="application" location="${classes.dir}"/>
+    
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+    </target>
+
+    <target name="compile">
+        <mkdir dir="${classes.dir}"/>
+        <javac fork="true" srcdir="${src.dir}" destdir="${classes.dir}" classpathref="classpath" includeantruntime="false"/>
+        <copy todir="${classes.dir}">
+            <fileset dir="src" />
+        </copy>
+    </target>    
+    
+    <target name="jar" depends="compile">
+        <mkdir dir="${jar.dir}"/>
+        <jar destfile="${jar.dir}/${ant.project.name}.jar" basedir="${classes.dir}">
+            <manifest>
+                <attribute name="Main-Class" value="${main-class}"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="compile-tests">
+        <mkdir dir="${classes.dir}-test"/>
+        <javac fork="true" srcdir="${test.dir}" destdir="${classes.dir}-test" classpathref="classpath" includeantruntime="false"/>
+        <copy todir="${classes.dir}-test">
+            <fileset dir="test" />
+        </copy>
+    </target>
+    
+    <target name="test" depends="compile-tests">
+		<junit printsummary="yes" haltonfailure="yes">
+		    <classpath>
+	    	    <pathelement location="${lib.dir}/junit-4.11.jar"/>
+		    	<pathelement location="${lib.dir}/hamcrest-all-1.3.jar"/>
+		        <path location="${classes.dir}-test"/>
+	    	</classpath>
+			<formatter type="xml"/>
+			<batchtest fork="yes" todir="${test.dir}/reports">
+				<fileset dir="${test.dir}">
+					<include name="**/*Test.java"/>
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+
+    <target name="clean-build" depends="clean,jar"/>
+
+    <target name="main" depends="clean-build"/>
+	
+    <target name="run" depends="clean-build">
+        <java jar="${jar.dir}/${ant.project.name}.jar" fork="true"/>
+    </target>
+
+</project>
