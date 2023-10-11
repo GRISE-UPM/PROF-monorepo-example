@@ -1,11 +1,23 @@
 pipeline {
   agent any
   stages {
-    stage('Stage 1') {
+    stage('Compile quicksort project') {
       steps {
-        echo 'Hello World!'
+        sh '''cd quicksort
+              make'''
+      }
+    stage('Move shared library') {
+      steps {
+        sh '''cp quicksort/quicksort.so arraysort/lib'''
       }
     }
-
+    stage('Compile arraysort project') {
+      steps {
+        withAnt {
+          sh '''cd quicksort
+                ant compile'''
+        }
+      }
+    }
   }
 }
