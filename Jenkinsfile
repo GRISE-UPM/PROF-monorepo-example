@@ -15,7 +15,7 @@ pipeline {
     stage('Compile arraysort project') {
       steps {
         withAnt {
-          sh '''cd quicksort
+          sh '''cd arraysort
                 ant compile'''
         }
       }
