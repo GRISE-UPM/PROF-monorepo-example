@@ -21,14 +21,7 @@ pipeline {
       }
     }
   }
-  scm {
-        git {
-            remote {
-                github('https://github.com/GRISE-UPM/PROF-monorepo-example')
-            }
-            branch('${sha1}')
-        }
-  }
+}
   triggers {
         githubPullRequest {
             admin(odieste')
