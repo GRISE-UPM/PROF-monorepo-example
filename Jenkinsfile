@@ -25,7 +25,6 @@ pipeline {
         git {
             remote {
                 github('https://github.com/GRISE-UPM/PROF-monorepo-example')
-                refspec('+refs/pull/*:refs/remotes/origin/pr/*')
             }
             branch('${sha1}')
         }
