@@ -22,10 +22,3 @@ pipeline {
     }
   }
 }
-  triggers {
-        githubPullRequest {
-            admin(odieste')
-            useGitHubHooks()
-        }
-    }
-}
