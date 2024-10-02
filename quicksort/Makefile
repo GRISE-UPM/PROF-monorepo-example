@@ -3,7 +3,7 @@ CC = gcc
 CFLAGS = -c -std=c99 -fPIC -Wall
 LFLAGS = -shared
 
-# The first rule is executed by make if no rules are given. Traditionally, the name is all, but that is not required. The following rule is actually unnecessary
+# If no rules are given, the first rule is executed by make. Traditionally, the name is all, but that is not required. 
 all: quicksort.so
 
 quicksort.so: quicksort.o
@@ -11,15 +11,15 @@ quicksort.so: quicksort.o
 
 # $@ is replaced by the target name
 
-# Rules have a given structure
-#target      #prerequisites
+# Rules have a fixed structure:
+
+#target: prerequisites
+#\t      recipe (set of commands)
+
 quicksort.o: quicksort.c
-#tab    #recipe (set of commands)
 	$(CC) $(CFLAGS) quicksort.c
 
-#The timestamp of the target and prerequisites are compared. When they differ, the build is launched
-
-
+# Wilcarrds are used extensively
 # %.o: %.c
 #	$(CC) $(CFLAGS) $<
 
